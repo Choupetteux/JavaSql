@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Enumeration;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
@@ -177,10 +178,15 @@ public class SqlPlusPlus {
 				this.base = base;
 				this.login = login;
 				this.pass = passwd;
-				
+				this.PROMPT1 = "Sql(" + this.base + ")++> "; 
 			} catch (IllegalArgumentException e) {
 				System.err.println(e.getMessage());
-			} catch (Exception e) {
+			} 
+			catch (NoSuchElementException e){
+				System.err.println("Il manque des paramètres à la fonctions connect, voir ci-dessous");
+				System.err.println("connect (BDName) (Login) (Passwd)");
+			}
+			catch (Exception e) {
 				System.err.println("Une erreur est survenue " + e);
 			}
 			finally{
