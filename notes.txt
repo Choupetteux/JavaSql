@@ -1,0 +1,2 @@
+connect bd11 lege0007 lege0007
+SELECT * FROM UTILISATEUR;

@@ -170,7 +170,7 @@ public class SqlPlusPlus {
 				// Chargement du driver
 				Class.forName(driver);
 				// Connexion à la base de données
-				Connection conn = DriverManager.getConnection(urlDB,login,passwd);
+				Connection conn = DriverManager.getConnection(urlDB, login, passwd);
 				// Tout s'est bien passé
 				ok = true;
 				// Mémorisation dans les attributs de l'instance
@@ -178,23 +178,20 @@ public class SqlPlusPlus {
 				this.base = base;
 				this.login = login;
 				this.pass = passwd;
-				this.PROMPT1 = "Sql(" + this.base + ")++> "; 
+				this.PROMPT1 = "Sql(" + this.base + ")++> ";
 			} catch (IllegalArgumentException e) {
 				System.err.println(e.getMessage());
-			} 
-			catch (NoSuchElementException e){
+			} catch (NoSuchElementException e) {
 				System.err.println("Il manque des paramètres à la fonctions connect, voir ci-dessous");
 				System.err.println("connect (BDName) (Login) (Passwd)");
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				System.err.println("Une erreur est survenue " + e);
-			}
-			finally{
-				if(ok){
+			} finally {
+				if (ok) {
 					System.out.println("La connexion à la base de données " + base + " a été établie");
 				}
 			}
-		
+
 		return ok;
 	}
 
@@ -332,12 +329,43 @@ public class SqlPlusPlus {
 	 * @return Vrai si l'ex�cution s'est bien pass�e
 	 */
 	private boolean executeSql(String commande) {
+		
 		boolean ok = true;
+		// Récupérer commande
+		String[] com = commande.split(" ");
+		
+		try {
+			Statement stmt = con.createStatement();
+			// Si verbe est SELECT
+			if (com[0].toUpperCase().equals("SELECT")) {
+				// commande querry
+				ResultSet rs;
 
-		/* A faire ... */
+				rs = stmt.executeQuery(commande);
+				// affichage du resultat set resultat
+				this.affiche_resultat(rs);
+			}
+
+			// sinon
+			else {
+
+				// execute update
+				int resultat = stmt.executeUpdate(commande);
+				// affichage de l'entier resultat
+
+				System.out.println(resultat);
+
+			}
+
+		} catch (SQLException e) {
+			System.err.println("Une erreur SQL est survenue:"+ e.getMessage());
+			ok=false;
+		}
 
 		return ok;
 	}
+	
+	
 
 	/**
 	 * Construction de la commande sql (qui doit �tre termin�e par ';')<br>
